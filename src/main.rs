@@ -1,3 +1,4 @@
+mod config;
 mod stereotype;
 
 use adw::{ActionRow, Application, ApplicationWindow, HeaderBar, ToolbarView};
@@ -8,8 +9,7 @@ use gtk::{Box, Button, Label, ListBox};
 use gtk::{Orientation, Align};
 use gtk::FileDialog;
 use stereotype::{stereotyper::stereotype_file, file_stereotype::FileStereotype};
-
-const APP_ID: &str = "dev.mateusrodcosta.Stereotyping";
+use config::APP_ID;
 
 fn main() -> glib::ExitCode {
     let app = Application::builder().application_id(APP_ID).build();
@@ -55,6 +55,10 @@ fn build_intial_screen(app: &Application) {
         .content(&toolbar_view)
         .build();
     window.set_default_size(640, 480);
+
+    if APP_ID.ends_with(".Devel") {
+        window.add_css_class("devel");
+    }
 
     button.connect_clicked(clone!(@weak window, @weak toolbar_view => move |_| {
         let file_dialog = FileDialog::new();
